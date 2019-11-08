@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="Invoice System" Height="681.53" Width="720.505">
     <Grid>
+        <Frame x:Name="contextFrame" Content="Frame" HorizontalAlignment="Left" Height="540" Margin="10,33,0,0" VerticalAlignment="Top" Width="693"/>
 
     </Grid>
 </Window>
