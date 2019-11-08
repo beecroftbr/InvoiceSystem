@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvoiceSystem"
         mc:Ignorable="d"
-        Title="Invoice System" Height="450" Width="800">
+        Title="Invoice System" Height="681.53" Width="720.505">
     <Grid>
-        
+
     </Grid>
 </Window>

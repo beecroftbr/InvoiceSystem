@@ -8,5 +8,6 @@ namespace InvoiceSystem.Main
 {
     class clsMainLogic
     {
+
     }
 }
