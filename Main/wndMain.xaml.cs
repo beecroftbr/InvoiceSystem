@@ -147,7 +147,14 @@ namespace InvoiceSystem.Main
             try
             {
                 inventoryItems = clsMainLogic.GetAllItems();
+                Item oldSelectedItem = null;
+                // To preserve the old item selection, get the selected item, if it exists.
+                if(cmbItemSelection.SelectedItem != null)
+                    oldSelectedItem = cmbItemSelection.SelectedItem as Item;
                 cmbItemSelection.ItemsSource = inventoryItems;
+                // Restore the user's item selection, if possible.
+                if (oldSelectedItem != null)
+                    cmbItemSelection.SelectedItem = cmbItemSelection.Items.OfType<Item>().Where(a => a.ItemCode == oldSelectedItem.ItemCode).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -197,7 +204,7 @@ namespace InvoiceSystem.Main
             {
                 new Items.wndItems().ShowDialog();
                 // Refresh item defs in the event anything was changed.
-                cmbItemSelection.ItemsSource = clsMainLogic.GetAllItems();
+                SetItemsList();
             }
             catch (Exception ex)
             {
@@ -282,6 +289,28 @@ namespace InvoiceSystem.Main
                 ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                     MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Event handler for when the Invoice Items combo box is changed.
+        /// </summary>
+        /// <param name="sender">The Combo Box that had its selection changed.</param>
+        /// <param name="e">Unused.</param>
+        private void CmbInvoiceItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Can't operate without a source combo box.
+            if (!(sender is ComboBox)) return;
+            ComboBox senderCombo = sender as ComboBox;
+            // If there's nothing in this box, set the grid's selected item to null and
+            // return.
+            if(senderCombo.SelectedItem == null)
+            {
+                grdInvoiceDetails.SelectedItem = null;
+                return;
+            }
+            if (!(senderCombo.SelectedItem is Item)) return;
+            Item currentItem = senderCombo.SelectedItem as Item;
+            grdInvoiceDetails.SelectedItem = grdInvoiceDetails.Items.OfType<Item>().Where(a => a.LineItemNumber == currentItem.LineItemNumber).FirstOrDefault();
         }
         #endregion
 

@@ -16,7 +16,7 @@
                     <MenuItem Header="_Exit" Click="mnuExit_Click"/>
                 </MenuItem>
             </Menu>
-            <TextBox AcceptsReturn="True" />
+            <Rectangle Width="Auto" Height="Auto" />
         </DockPanel>
 
         <GroupBox Header="Invoice Details" HorizontalAlignment="Left" Height="377" Margin="10,75,0,0" VerticalAlignment="Top" Width="693">
@@ -56,7 +56,7 @@
                 </GroupBox>
                 <GroupBox Header="Item Controls" HorizontalAlignment="Left" Height="209" Margin="428,138,0,0" VerticalAlignment="Top" Width="235">
                     <Grid HorizontalAlignment="Left" Height="199" Margin="0,0,-2,-12" VerticalAlignment="Top" Width="225">
-                        <ComboBox x:Name="cmbInvoiceItems" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="205"/>
+                        <ComboBox x:Name="cmbInvoiceItems" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="205" SelectionChanged="CmbInvoiceItems_SelectionChanged"/>
                         <Button Content="Remove Selected" HorizontalAlignment="Left" Margin="60,37,0,0" VerticalAlignment="Top" Width="104"/>
                         <Label Content="Add New Item" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="205"/>
                         <Rectangle Fill="#CCCCCC" HorizontalAlignment="Left" Height="1" Margin="10,66,0,0" Stroke="Gray" VerticalAlignment="Top" Width="205" RenderTransformOrigin="0.43,0.27"/>
