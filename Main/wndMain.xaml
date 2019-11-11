@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvoiceSystem"
         mc:Ignorable="d"
-        Title="wndMain" Height="492.53" Width="720.505" ResizeMode="NoResize">
+        Title="Invoice System" Height="492.53" Width="720.505" ResizeMode="NoResize">
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top">
@@ -18,7 +18,7 @@
             </Menu>
             <TextBox AcceptsReturn="True" />
         </DockPanel>
-        
+
         <GroupBox Header="Invoice Details" HorizontalAlignment="Left" Height="377" Margin="10,75,0,0" VerticalAlignment="Top" Width="693">
             <Grid HorizontalAlignment="Left" Height="357" Margin="10,10,-2,-12" VerticalAlignment="Top" Width="673">
                 <!--<Label Content="Select Invoice: " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="84"/>
@@ -30,32 +30,48 @@
                 <Label Content="Items:" HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top"/>
                 <Button Content="Cancel" HorizontalAlignment="Left" Margin="142,322,0,0" VerticalAlignment="Top" Width="90" Height="25"/>
                 <Button Content="Save Changes" HorizontalAlignment="Left" Margin="10,322,0,0" VerticalAlignment="Top" Width="84" Height="25"/>-->
-                <DataGrid HorizontalAlignment="Center" Height="347" Margin="0,0,250,0" VerticalAlignment="Top" Width="423" Name="InvoiceDetails"
-                  ItemsSource ="{Binding}" AutoGenerateColumns="False" HorizontalContentAlignment="Center" IsReadOnly="True" CanUserAddRows="False"
+                <DataGrid HorizontalAlignment="Center" Height="347" Margin="0,0,250,0" VerticalAlignment="Top" Width="423" Name="grdInvoiceDetails"
+                  ItemsSource ="{Binding itemList}" DataContext="{Binding RelativeSource={RelativeSource Self}}" AutoGenerateColumns="False" HorizontalContentAlignment="Center" IsReadOnly="True" CanUserAddRows="False"
                   CanUserReorderColumns="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" SelectionChanged="InvoiceDetails_SelectionChanged" SelectionUnit="FullRow">
-                    
-                    <DataGrid.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#00000000"/>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#00000000"/>
-                    </DataGrid.Resources>
+
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Line Item"
-                                    Binding="{Binding face}" Width="70"/>
-                        <DataGridTextColumn Header="test"
-                                    Binding="{Binding timesRolled}"/>
-                        <DataGridTextColumn Header="PERCENT"
-                                    Binding="{Binding percentRolled}"/>
-                        <DataGridTextColumn Header="NUMBER OF TIMES GUESSED"
-                                    Binding="{Binding timesGuessed}"
+                        <DataGridTextColumn Header="Item Code" Width="70"
+                                    Binding="{Binding ItemCode}"/>
+                        <DataGridTextColumn Header="Item Description" Width="290"
+                                    Binding="{Binding ItemDesc}"/>
+                        <DataGridTextColumn Header="Cost"
+                                    Binding="{Binding Cost}"
                                     Width="*"/>
                     </DataGrid.Columns>
 
                 </DataGrid>
+                <GroupBox Header="Invoice Controls" HorizontalAlignment="Left" Height="123" Margin="428,10,0,0" VerticalAlignment="Top" Width="235">
+                    <Grid HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="225" Margin="0,0,-2,0">
+                        <Button x:Name="btnAddInvoice" Content="Add Invoice" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="205" Height="25"/>
+                        <Button x:Name="btnEditInvoice" Content="Edit Invoice" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="205" Height="25"/>
+                        <Button x:Name="btnDeleteInvoice" Content="Delete Invoice" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="205" Height="25"/>
+
+                    </Grid>
+
+                </GroupBox>
+                <GroupBox Header="Item Controls" HorizontalAlignment="Left" Height="209" Margin="428,138,0,0" VerticalAlignment="Top" Width="235">
+                    <Grid HorizontalAlignment="Left" Height="199" Margin="0,0,-2,-12" VerticalAlignment="Top" Width="225">
+                        <ComboBox x:Name="cmbInvoiceItems" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="205"/>
+                        <Button Content="Remove Selected" HorizontalAlignment="Left" Margin="60,37,0,0" VerticalAlignment="Top" Width="104"/>
+                        <Label Content="Add New Item" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="205"/>
+                        <Rectangle Fill="#CCCCCC" HorizontalAlignment="Left" Height="1" Margin="10,66,0,0" Stroke="Gray" VerticalAlignment="Top" Width="205" RenderTransformOrigin="0.43,0.27"/>
+                        <ComboBox x:Name="cmbItemSelection" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top" Width="205"/>
+                        <Button Content="Add to Invoice" HorizontalAlignment="Left" Margin="60,129,0,0" VerticalAlignment="Top" Width="104"/>
+
+                    </Grid>
+
+                </GroupBox>
             </Grid>
         </GroupBox>
-        <Label x:Name="lblInvoiceID" Content="Invoice ID: " HorizontalAlignment="Left" Margin="133,33,0,0" VerticalAlignment="Top" FontWeight="DemiBold"/>
-        <Label x:Name="lblInvoiceDate" Content="Invoice Date: " HorizontalAlignment="Left" Margin="412,33,0,0" VerticalAlignment="Top" FontWeight="DemiBold"/>
+        <Label x:Name="lblInvoiceID" Content="Invoice ID: " HorizontalAlignment="Left" Margin="126,38,0,0" VerticalAlignment="Top" FontWeight="DemiBold"/>
+        <Label x:Name="lblInvoiceDate" Content="Invoice Date: " HorizontalAlignment="Left" Margin="286,38,0,0" VerticalAlignment="Top" FontWeight="DemiBold"/>
+        <Label x:Name="lblTotalCost" Content="Total Cost: " HorizontalAlignment="Left" Margin="485,38,0,0" VerticalAlignment="Top" FontWeight="DemiBold"/>
 
     </Grid>
-    
+
 </Window>

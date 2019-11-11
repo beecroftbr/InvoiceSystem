@@ -81,10 +81,58 @@ namespace InvoiceSystem.Main
                 {
                     InvoiceNumber = int.TryParse(rowEntry.ItemArray[0].ToString(), out int inNumber) ? inNumber : 0,
                     InvoiceDate = DateTime.Parse(rowEntry.ItemArray[1].ToString()),
-                    TotalCost = double.TryParse(rowEntry.ItemArray[2].ToString(), out double totalCost) ? totalCost : 0
+                    TotalCost = double.TryParse(rowEntry.ItemArray[2].ToString(), out double totalCost) ? totalCost : 0,
+                    Items = GetItems(inNumber),
                 });
             }
             return invoiceList;
+        }
+
+
+        public static List<Item> GetItems(int invoiceNumber)
+        {
+            clsDataAccess db = new clsDataAccess();
+            string sSQL = "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost, LineItems.LineItemNum " +
+                "FROM LineItems, ItemDesc Where LineItems.ItemCode = ItemDesc.ItemCode And LineItems.InvoiceNum = " + invoiceNumber;
+            int numRows = 0;
+            DataSet ds = db.ExecuteSQLStatement(sSQL, ref numRows);
+            var tableszero = ds.Tables[0];
+            List<Item> itemList = new List<Item>();
+            for (int i = 0; i < tableszero.Rows.Count; i++)
+            {
+                var rowEntry = tableszero.Rows[i];
+                itemList.Add(new Item()
+                {
+                    ItemCode = rowEntry.ItemArray[0].ToString(),
+                    ItemDesc = rowEntry.ItemArray[1].ToString(),
+                    Cost = double.TryParse(rowEntry.ItemArray[2].ToString(), out double totalCost) ? totalCost : 0,
+                    LineItemNumber = int.TryParse(rowEntry.ItemArray[3].ToString(), out int liNumber) ? liNumber : 0
+                });
+            }
+            return itemList;
+
+        }
+
+        public static List<Item> GetAllItems()
+        {
+
+            clsDataAccess db = new clsDataAccess();
+            string sSQL = "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
+            int numRows = 0;
+            DataSet ds = db.ExecuteSQLStatement(sSQL, ref numRows);
+            var tableszero = ds.Tables[0];
+            List<Item> itemList = new List<Item>();
+            for (int i = 0; i < tableszero.Rows.Count; i++)
+            {
+                var rowEntry = tableszero.Rows[i];
+                itemList.Add(new Item()
+                {
+                    ItemCode = rowEntry.ItemArray[0].ToString(),
+                    ItemDesc = rowEntry.ItemArray[1].ToString(),
+                    Cost = double.TryParse(rowEntry.ItemArray[2].ToString(), out double totalCost) ? totalCost : 0
+                });
+            }
+            return itemList;
         }
     }
 }

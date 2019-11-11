@@ -13,6 +13,10 @@ namespace InvoiceSystem
     public class Item
     {
         /// <summary>
+        /// Line item number, if this item is part of an invoice.
+        /// </summary>
+        public int LineItemNumber { get; set; }
+        /// <summary>
         /// The item code for this item.
         /// </summary>
         public string ItemCode { get; set; }

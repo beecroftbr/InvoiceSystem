@@ -30,13 +30,6 @@ namespace InvoiceSystem
         /// </summary>
         public List<Item> Items { get; set; }
 
-        /// <summary>
-        /// The items that this invoice initialized with.
-        /// Used for change tracking.  Do not change this collection
-        /// after initialization.
-        /// </summary>
-        private List<Item> InitializedItems { get; set; }
-
 
         /// <summary>
         /// Override for the ToString method that outputs the invoice data in a more readable format.
