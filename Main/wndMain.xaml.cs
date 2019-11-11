@@ -136,7 +136,7 @@ namespace InvoiceSystem.Main
         {
             if (!(sender is DataGrid)) return;
             DataGrid sourceGrid = sender as DataGrid;
-            sourceGrid.SelectedIndex
+            
         }
     }
 }
