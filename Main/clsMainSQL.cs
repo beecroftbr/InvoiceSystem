@@ -11,128 +11,63 @@ namespace InvoiceSystem.Main
     static class clsMainSQL
     {
         /// <summary>
-        /// Given an invoice ID and a cost, set the invoice's cost to
-        /// the number defined by cost.
+        /// Gets the SQL for deleting line items, given an invoice ID.
         /// </summary>
-        /// <param name="invoiceID"></param>
-        /// <param name="cost"></param>
-        public static void SetCostByID(int invoiceID, int cost)
+        /// <param name="invoiceID">The invoice ID corresponding to the line items to delete.</param>
+        /// <returns>The SQL statement for deleting all line items that match the invoiceID.</returns>
+        public static string DeleteLineItemsByInvoiceID(int invoiceID)
         {
-            try
-            {
-                clsDataAccess db = new clsDataAccess();
-                string sSQL = "UPDATE Invoices SET TotalCost = " + cost + " WHERE InvoiceNum = " + invoiceID;
-                db.ExecuteNonQuery(sSQL);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "."
-                    + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
+            return "DELETE From LineItems WHERE InvoiceNum = " + invoiceID;
         }
 
         /// <summary>
-        /// Delete the invoice corresponding to the given invoice ID.
+        /// Gets the SQL for deleting invoices, given their ID.
         /// </summary>
-        /// <param name="invoiceID">The ID corresponding with the invoice to delete.</param>
-        public static void DeleteInvoice(int invoiceID)
+        /// <param name="invoiceID">The invoice ID corresponding to the invoice to delete.</param>
+        /// <returns>The SQL statement for deleting the invoice matching a given ID.</returns>
+        public static string DeleteInvoiceByID(int invoiceID)
         {
-            try
-            {
-                // First, delete the line items associated with the Invoice.
-                clsDataAccess db = new clsDataAccess();
-                string sSQL = "DELETE From LineItems WHERE InvoiceNum = " + invoiceID;
-                db.ExecuteNonQuery(sSQL);
-                // Next, delete the Invoice proper.
-                sSQL = "DELETE From Invoices WHERE InvoiceNum = " + invoiceID;
-                db.ExecuteNonQuery(sSQL);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "."
-                    + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
+            return "DELETE From Invoices WHERE InvoiceNum = " + invoiceID;
         }
 
-        public static List<Invoice> GetInvoices(bool addAdditionHeader = false)
+        /// <summary>
+        /// Gets the SQL for setting a cost in Invoices to a particular cost, matching a given invoice ID.
+        /// </summary>
+        /// <param name="cost">The cost to set the invoice's cost to.</param>
+        /// <param name="id">The ID of the invoice to set the cost for.</param>
+        /// <returns>The SQL statement for setting a cost in Invoices to a particular cost, matching a given invoice ID.</returns>
+        public static string SetCostByID(double cost, int id)
         {
-
-            clsDataAccess db = new clsDataAccess();
-            string sSQL = "SELECT InvoiceNum, InvoiceDate, TotalCost FROM Invoices";
-            int numRows = 0;
-            DataSet ds = db.ExecuteSQLStatement(sSQL, ref numRows);
-            var tableszero = ds.Tables[0];
-            List<Invoice> invoiceList = new List<Invoice>();
-            // Add a 'header' invoice, which is just a dummy invoice
-            // for certain combo boxes.
-            // By default, this does not run.
-            if (addAdditionHeader)
-            {
-                invoiceList.Add(new Invoice()
-                {
-                    InvoiceNumber = -200,
-                    TotalCost = 0
-                });
-            }
-            for (int i = 0; i < tableszero.Rows.Count; i++)
-            {
-                var rowEntry = tableszero.Rows[i];
-                invoiceList.Add(new Invoice()
-                {
-                    InvoiceNumber = int.TryParse(rowEntry.ItemArray[0].ToString(), out int inNumber) ? inNumber : 0,
-                    InvoiceDate = DateTime.Parse(rowEntry.ItemArray[1].ToString()),
-                    TotalCost = double.TryParse(rowEntry.ItemArray[2].ToString(), out double totalCost) ? totalCost : 0,
-                    Items = GetItems(inNumber),
-                });
-            }
-            return invoiceList;
+            return "UPDATE Invoices SET TotalCost = " + cost + " WHERE InvoiceNum = " + id;
         }
 
-
-        public static List<Item> GetItems(int invoiceNumber)
+        /// <summary>
+        /// Gets the SQL for getting all invoices in the system.
+        /// </summary>
+        /// <returns>The SQL statement for getting all invoices in the system.</returns>
+        public static string GetInvoices()
         {
-            clsDataAccess db = new clsDataAccess();
-            string sSQL = "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost, LineItems.LineItemNum " +
-                "FROM LineItems, ItemDesc Where LineItems.ItemCode = ItemDesc.ItemCode And LineItems.InvoiceNum = " + invoiceNumber;
-            int numRows = 0;
-            DataSet ds = db.ExecuteSQLStatement(sSQL, ref numRows);
-            var tableszero = ds.Tables[0];
-            List<Item> itemList = new List<Item>();
-            for (int i = 0; i < tableszero.Rows.Count; i++)
-            {
-                var rowEntry = tableszero.Rows[i];
-                itemList.Add(new Item()
-                {
-                    ItemCode = rowEntry.ItemArray[0].ToString(),
-                    ItemDesc = rowEntry.ItemArray[1].ToString(),
-                    Cost = double.TryParse(rowEntry.ItemArray[2].ToString(), out double totalCost) ? totalCost : 0,
-                    LineItemNumber = int.TryParse(rowEntry.ItemArray[3].ToString(), out int liNumber) ? liNumber : 0
-                });
-            }
-            return itemList;
-
+            return "SELECT InvoiceNum, InvoiceDate, TotalCost FROM Invoices";
         }
 
-        public static List<Item> GetAllItems()
+        /// <summary>
+        /// Gets the SQL for getting all item details that are associated with a given invoice number.
+        /// </summary>
+        /// <param name="invoiceNumber">The invoice number to query by.</param>
+        /// <returns>The SQL statement for getting all item details that are associated with a given invoice number.</returns>
+        public static string GetItemsByInvoiceNumber(int invoiceNumber)
         {
+            return "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost, LineItems.LineItemNum " +
+                    "FROM LineItems, ItemDesc Where LineItems.ItemCode = ItemDesc.ItemCode And LineItems.InvoiceNum = " + invoiceNumber;
+        }
 
-            clsDataAccess db = new clsDataAccess();
-            string sSQL = "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
-            int numRows = 0;
-            DataSet ds = db.ExecuteSQLStatement(sSQL, ref numRows);
-            var tableszero = ds.Tables[0];
-            List<Item> itemList = new List<Item>();
-            for (int i = 0; i < tableszero.Rows.Count; i++)
-            {
-                var rowEntry = tableszero.Rows[i];
-                itemList.Add(new Item()
-                {
-                    ItemCode = rowEntry.ItemArray[0].ToString(),
-                    ItemDesc = rowEntry.ItemArray[1].ToString(),
-                    Cost = double.TryParse(rowEntry.ItemArray[2].ToString(), out double totalCost) ? totalCost : 0
-                });
-            }
-            return itemList;
+        /// <summary>
+        /// Gets thet SQL for getting all items in the database.
+        /// </summary>
+        /// <returns>The SQL statement that fetches all items in the databse.</returns>
+        public static string GetAllItems()
+        {
+            return "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
         }
     }
 }
