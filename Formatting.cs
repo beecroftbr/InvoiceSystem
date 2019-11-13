@@ -19,5 +19,10 @@ namespace InvoiceSystem
         {
             return dollarAmount.ToString("C2");
         }
+        public static string GetFormattedAccessDateTime(DateTime date)
+        {
+            return "#" + date.Year + "-" + date.Month.ToString("D2") + "-" + date.Day.ToString("D2")
+                + " " + date.Hour.ToString("D2") + ":" + date.Minute.ToString("D2") + ":" + date.Second.ToString("D2") + "#";
+        }
     }
 }

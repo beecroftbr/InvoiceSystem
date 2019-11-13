@@ -62,12 +62,33 @@ namespace InvoiceSystem.Main
         }
 
         /// <summary>
-        /// Gets thet SQL for getting all items in the database.
+        /// Gets the SQL for getting all items in the database.
         /// </summary>
         /// <returns>The SQL statement that fetches all items in the databse.</returns>
         public static string GetAllItems()
         {
             return "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
+        }
+
+        /// <summary>
+        /// Gets the SQL for inserting a new Invoice object to the database.
+        /// </summary>
+        /// <param name="invoiceToSave">The Invoice to save to the database.</param>
+        /// <returns>The SQL statement for inserting a new Invoice object to the database.</returns>
+        public static string AddNewInvoice(Invoice invoiceToSave)
+        {
+            return "INSERT INTO Invoices(InvoiceDate, TotalCost) VALUES(" + Formatting.GetFormattedAccessDateTime(invoiceToSave.InvoiceDate) + ", " + invoiceToSave.TotalCost + ")";
+        }
+
+        /// <summary>
+        /// Gets the SQL for inserting a line item, based on an invoice and an item belonging to that invoice.
+        /// </summary>
+        /// <param name="invoiceToInsert">The invoice associated with the line item.</param>
+        /// <param name="itemToInsert">The item to be associated with the line item.</param>
+        /// <returns></returns>
+        public static string AddLineItemForInvoice(Invoice invoiceToInsert, Item itemToInsert)
+        {
+            return "INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) Values (" + invoiceToInsert.InvoiceNumber + ", " + itemToInsert.LineItemNumber + ", '" + itemToInsert.ItemCode + "')";
         }
     }
 }

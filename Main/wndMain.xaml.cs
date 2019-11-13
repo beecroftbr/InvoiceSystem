@@ -40,6 +40,23 @@ namespace InvoiceSystem.Main
                 _modifyingInvoice = value;
                 // Can't open item definitions if we're modifying an invoice.
                 mnuItemDefs.IsEnabled = !value;
+                btnEditInvoice.IsEnabled = !value;
+                grpItemControls.IsEnabled = value;
+                mnuInvoiceSearch.IsEnabled = !value;
+                if (value)
+                {
+                    btnAddInvoice.Visibility = Visibility.Hidden;
+                    btnDeleteInvoice.Visibility = Visibility.Hidden;
+                    btnSaveInvoice.Visibility = Visibility.Visible;
+                    btnCancelInvoice.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btnAddInvoice.Visibility = Visibility.Visible;
+                    btnDeleteInvoice.Visibility = Visibility.Visible;
+                    btnSaveInvoice.Visibility = Visibility.Hidden;
+                    btnCancelInvoice.Visibility = Visibility.Hidden;
+                }
 
             }
         }
@@ -60,10 +77,67 @@ namespace InvoiceSystem.Main
             set
             {
                 _addingInvoice = value;
-                btnEditInvoice.IsEnabled = !value;
+                btnAddInvoice.IsEnabled = !value;
+                grpItemControls.IsEnabled = value;
+                mnuInvoiceSearch.IsEnabled = !value;
+                mnuItemDefs.IsEnabled = !value;
+                if (value)
+                {
+                    btnEditInvoice.Visibility = Visibility.Hidden;
+                    btnDeleteInvoice.Visibility = Visibility.Hidden;
+                    btnSaveInvoice.Visibility = Visibility.Visible;
+                    btnCancelInvoice.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btnEditInvoice.Visibility = Visibility.Visible;
+                    btnDeleteInvoice.Visibility = Visibility.Visible;
+                    btnSaveInvoice.Visibility = Visibility.Hidden;
+                    btnCancelInvoice.Visibility = Visibility.Hidden;
+                }
 
             }
         }
+
+        /// <summary>
+        /// Bool that is used to handle the value for the DeletingInvoice property.
+        /// </summary>
+        private bool _deletingInvoice = false;
+        /// <summary>
+        /// Property that controls access to certain functions if we're deleting an invoice.
+        /// </summary>
+        private bool DeletingInvoice
+        {
+            get
+            {
+                return _deletingInvoice;
+            }
+            set
+            {
+                _deletingInvoice = value;
+                btnDeleteInvoice.IsEnabled = !value;
+                mnuInvoiceSearch.IsEnabled = !value;
+                mnuItemDefs.IsEnabled = !value;
+                if (value)
+                {
+                    btnAddInvoice.Visibility = Visibility.Hidden;
+                    btnEditInvoice.Visibility = Visibility.Hidden;
+                    btnDeleteCancel.Visibility = Visibility.Visible;
+                    btnDeleteConfirm.Visibility = Visibility.Visible;
+                    lblDeleteConfirmation.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btnAddInvoice.Visibility = Visibility.Visible;
+                    btnEditInvoice.Visibility = Visibility.Visible;
+                    btnDeleteCancel.Visibility = Visibility.Hidden;
+                    btnDeleteConfirm.Visibility = Visibility.Hidden;
+                    lblDeleteConfirmation.Visibility = Visibility.Hidden;
+                }
+
+            }
+        }
+
 
         /// <summary>
         /// Holds the Invoice object that is currently being viewed and modified.
@@ -79,6 +153,11 @@ namespace InvoiceSystem.Main
         /// A list of items representing the inventory items in the database.
         /// </summary>
         private List<Item> inventoryItems;
+
+        /// <summary>
+        /// Holds information on a new (if any) invoice.
+        /// </summary>
+        private Invoice newInvoice;
 
         /// <summary>
         /// Default constructor for wndMain.
@@ -123,13 +202,16 @@ namespace InvoiceSystem.Main
         {
             try
             {
-                _currentInvoice = invoice;
-                itemList = new ObservableCollection<Item>(_currentInvoice.Items);
+                if(!AddingInvoice && !ModifyingInvoice)
+                    _currentInvoice = invoice;
+                if (invoice != null && invoice.Items.Any())
+                    itemList = new ObservableCollection<Item>(invoice.Items);
+                else itemList = new ObservableCollection<Item>();
                 cmbInvoiceItems.ItemsSource = itemList;
                 grdInvoiceDetails.ItemsSource = itemList;
-                lblInvoiceID.Content = "Invoice ID: " + _currentInvoice.InvoiceNumber;
-                lblInvoiceDate.Content = "Invoice Date: " + _currentInvoice.InvoiceDate.ToShortDateString();
-                lblTotalCost.Content = "Total Cost: " + Formatting.FormatCurrency(_currentInvoice.TotalCost);
+                lblInvoiceID.Content = "Invoice ID: " + (AddingInvoice ? "< New Invoice > " : invoice?.InvoiceNumber.ToString());
+                lblInvoiceDate.Content = "Invoice Date: " + invoice?.InvoiceDate.ToShortDateString();
+                lblTotalCost.Content = "Total Cost: " + (invoice != null ? Formatting.FormatCurrency(invoice.TotalCost) : "");
             }
             catch (Exception ex)
             {
@@ -298,21 +380,284 @@ namespace InvoiceSystem.Main
         /// <param name="e">Unused.</param>
         private void CmbInvoiceItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Can't operate without a source combo box.
-            if (!(sender is ComboBox)) return;
-            ComboBox senderCombo = sender as ComboBox;
-            // If there's nothing in this box, set the grid's selected item to null and
-            // return.
-            if(senderCombo.SelectedItem == null)
+            try
             {
-                grdInvoiceDetails.SelectedItem = null;
-                return;
+                // Can't operate without a source combo box.
+                if (!(sender is ComboBox)) return;
+                ComboBox senderCombo = sender as ComboBox;
+                // If there's nothing in this box, set the grid's selected item to null and
+                // return.
+                if (senderCombo.SelectedItem == null)
+                {
+                    grdInvoiceDetails.SelectedItem = null;
+                    return;
+                }
+                if (!(senderCombo.SelectedItem is Item)) return;
+                Item currentItem = senderCombo.SelectedItem as Item;
+                grdInvoiceDetails.SelectedItem = grdInvoiceDetails.Items.OfType<Item>().Where(a => a.LineItemNumber == currentItem.LineItemNumber).FirstOrDefault();
             }
-            if (!(senderCombo.SelectedItem is Item)) return;
-            Item currentItem = senderCombo.SelectedItem as Item;
-            grdInvoiceDetails.SelectedItem = grdInvoiceDetails.Items.OfType<Item>().Where(a => a.LineItemNumber == currentItem.LineItemNumber).FirstOrDefault();
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for the Add Invoice button.
+        /// Changes the view to allow the user to add a new invoice.
+        /// </summary>
+        /// <param name="sender">Unused.</param>
+        /// <param name="e">Unused.</param>
+        private void BtnAddInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // When adding invoice, we should disable or make invisible edit/delete buttons.  Perhaps
+                // that space can be repurposed.
+                // We should disallow search/item edit functions as well.
+                AddingInvoice = true;
+                newInvoice = new Invoice()
+                {
+                    InvoiceNumber = 0,
+                    InvoiceDate = DateTime.Today,
+                    TotalCost = 0,
+                    Items = new List<Item>()
+                };
+                SetInvoice(newInvoice);
+                lblInvoiceID.Content = "Invoice ID: < New Invoice >";
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for the Save Invoice button.
+        /// Allows the user to save the new invoice they're adding.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSaveInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int invoiceNumber = clsMainLogic.SaveInvoice((AddingInvoice || ModifyingInvoice ? newInvoice : _currentInvoice), AddingInvoice);
+                if (AddingInvoice)
+                {
+                    _currentInvoice = clsMainLogic.GetInvoices().Where(a => a.InvoiceNumber == invoiceNumber).FirstOrDefault();
+                    AddingInvoice = !AddingInvoice;
+                    SetInvoice(_currentInvoice);
+                }
+                else if (ModifyingInvoice)
+                {
+                    _currentInvoice = clsMainLogic.GetInvoices().Where(a => a.InvoiceNumber == invoiceNumber).FirstOrDefault();
+                    ModifyingInvoice = false;
+                    SetInvoice(_currentInvoice);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for the Cancel invoice button.
+        /// Allows the user to back out of invoice creation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnCancelInvoice_Click(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                if(AddingInvoice)
+                    AddingInvoice = false;
+                if (ModifyingInvoice)
+                    ModifyingInvoice = false;
+                SetInvoice(_currentInvoice);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for the button called "Add to Invoice".
+        /// Adds an item to the current invoice.
+        /// </summary>
+        /// <param name="sender">The Button object sending the event.</param>
+        /// <param name="e">Unused.</param>
+        private void BtnAddToInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // If the wrong thing called this, return.
+                if (!(sender is Button)) return;
+                // If the item selected in the item selection box isn't an item, we can't add anything.
+                if (!(cmbItemSelection.SelectedItem is Item)) return;
+                Item selectedItem = cmbItemSelection.SelectedItem as Item;
+                Invoice selectedInvoice = (AddingInvoice || ModifyingInvoice ? newInvoice : _currentInvoice);
+                Item newItemInstance = new Item()
+                {
+                    ItemCode = selectedItem.ItemCode,
+                    Cost = selectedItem.Cost,
+                    ItemDesc = selectedItem.ItemDesc,
+                    LineItemNumber = selectedInvoice.Items.Any() ? selectedInvoice.Items.Last().LineItemNumber + 1 : 1
+                };
+                selectedInvoice.Items.Add(newItemInstance);
+                selectedInvoice.TotalCost = selectedInvoice.Items.Sum(a => a.Cost);
+                SetInvoice(selectedInvoice);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for when the Item Controls groupbox has its IsEnabled property changed.
+        /// </summary>
+        /// <param name="sender">The GroupBox that sent the event.</param>
+        /// <param name="e">Unused.</param>
+        private void GrpItemControls_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            try
+            {
+                if (!this.IsVisible) return;
+                if (!(sender is GroupBox)) return;
+                cmbInvoiceItems.SelectedItem = null;
+                cmbItemSelection.SelectedItem = null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "."
+                    + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for the "Edit Invoice" button.
+        /// Copies the current invoice into a new invoice instance (to support the cancel function).
+        /// Very similar to adding a new invoice.
+        /// </summary>
+        /// <param name="sender">Unused.</param>
+        /// <param name="e">Unused.</param>
+        private void BtnEditInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Can't edit nothing
+                if (_currentInvoice == null) return;
+                ModifyingInvoice = true;
+                var itemsCopy = new List<Item>();
+                foreach(var item in _currentInvoice.Items)
+                {
+                    itemsCopy.Add(new Item()
+                    {
+                        ItemCode = item.ItemCode,
+                        ItemDesc = item.ItemDesc,
+                        LineItemNumber = item.LineItemNumber,
+                        Cost = item.Cost
+                    });
+                }
+                newInvoice = new Invoice()
+                {
+                    InvoiceNumber = _currentInvoice.InvoiceNumber,
+                    InvoiceDate = _currentInvoice.InvoiceDate,
+                    TotalCost = _currentInvoice.TotalCost,
+                    Items = itemsCopy
+                };
+                SetInvoice(newInvoice);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for the button that allows you to remove an item from the invoice.
+        /// </summary>
+        /// <param name="sender">Remove selected button.</param>
+        /// <param name="e">Unused.</param>
+        private void BtnRemoveSelectedItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!(sender is Button)) return;
+                if (!(cmbInvoiceItems.SelectedItem is Item)) return;
+                Item selectedItem = cmbInvoiceItems.SelectedItem as Item;
+                Invoice modifyingInvoice = ((AddingInvoice || ModifyingInvoice) ? newInvoice : _currentInvoice);
+                foreach (var item in modifyingInvoice.Items.Where(a => a.LineItemNumber > selectedItem.LineItemNumber))
+                {
+                    item.LineItemNumber--;
+                }
+                modifyingInvoice.Items.Remove(selectedItem);
+                modifyingInvoice.TotalCost = modifyingInvoice.Items.Sum(a => a.Cost);
+                SetInvoice(modifyingInvoice);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for the button that confirms an invoice deletion.
+        /// </summary>
+        /// <param name="sender">Unused.</param>
+        /// <param name="e">Unused.</param>
+        private void BtnDeleteConfirm_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Can't delete nothing
+                if (_currentInvoice == null) return;
+                clsMainLogic.DeleteInvoice(_currentInvoice.InvoiceNumber);
+                _currentInvoice = null;
+                SetInvoice(_currentInvoice);
+                DeletingInvoice = false;
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for the cancel button on the delete confirmation view.
+        /// </summary>
+        /// <param name="sender">Unused.</param>
+        /// <param name="e">Unused.</param>
+        private void BtnDeleteCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DeletingInvoice = false;
+        }
+
+        /// <summary>
+        /// Event handler for the delete button on the main Invoice Controls view.
+        /// </summary>
+        /// <param name="sender">Unused.</param>
+        /// <param name="e">Unused.</param>
+        private void BtnDeleteInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            // Can't delete nothing.
+            if(_currentInvoice != null)
+                DeletingInvoice = true;
         }
         #endregion
-
     }
 }

@@ -125,6 +125,54 @@ namespace InvoiceSystem.Main
         }
 
         /// <summary>
+        /// Saves an invoice entry to the database.
+        /// </summary>
+        /// <param name="invoiceToSave">The invoice to save.</param>
+        /// <param name="addAsNew">true if the invoice is new to the database; false otherwise.</param>
+        /// <returns>ID number of the saved invoice.</returns>
+        public static int SaveInvoice(Invoice invoiceToSave, bool addAsNew)
+        {
+            try
+            {
+                clsDataAccess db = new clsDataAccess();
+                string sSQL;
+                if (addAsNew)
+                {
+                    // If this is a new record, add it.
+                    IEnumerable<int> previousInvoices = clsMainLogic.GetInvoices().Select(a => a.InvoiceNumber);
+                    sSQL = clsMainSQL.AddNewInvoice(invoiceToSave);
+                    var ds = db.ExecuteNonQuery(sSQL);
+                    // Set our new invoice's Invoice Number to the new ID AutoNumber generated.
+                    invoiceToSave.InvoiceNumber = clsMainLogic.GetInvoices().Select(a => a.InvoiceNumber).Except(previousInvoices).First();
+                }
+                else
+                {
+                    // Otherwise, if this exists already, update the existing record.
+                    // Since the only changing thing about an invoice is its cost,
+                    // update the cost for this invoice.
+                    sSQL = clsMainSQL.SetCostByID(invoiceToSave.TotalCost, invoiceToSave.InvoiceNumber);
+                    db.ExecuteNonQuery(sSQL);
+                }
+                // Delete all line items associated with the invoice.
+                Invoice oldInvoice = GetInvoices().Where(a => a.InvoiceNumber == invoiceToSave.InvoiceNumber).First();
+                sSQL = clsMainSQL.DeleteLineItemsByInvoiceID(oldInvoice.InvoiceNumber);
+                db.ExecuteNonQuery(sSQL);
+                // Now, add all line items associated with the updated or inserted invoice.
+                foreach (var item in invoiceToSave.Items)
+                {
+                    sSQL = clsMainSQL.AddLineItemForInvoice(invoiceToSave, item);
+                    db.ExecuteNonQuery(sSQL);
+                }
+                return invoiceToSave.InvoiceNumber;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "."
+                    + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Gets a list of all Items in the database.
         /// </summary>
         /// <returns>A List of all Items in the database.</returns>

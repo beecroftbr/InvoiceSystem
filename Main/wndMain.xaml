@@ -45,25 +45,34 @@
                     </DataGrid.Columns>
 
                 </DataGrid>
-                <GroupBox Header="Invoice Controls" HorizontalAlignment="Left" Height="123" Margin="428,10,0,0" VerticalAlignment="Top" Width="235">
+                <GroupBox x:Name="grpInvoiceControls" Header="Invoice Controls" HorizontalAlignment="Left" Height="123" Margin="428,10,0,0" VerticalAlignment="Top" Width="235">
                     <Grid HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="225" Margin="0,0,-2,0">
-                        <Button x:Name="btnAddInvoice" Content="Add Invoice" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="205" Height="25"/>
-                        <Button x:Name="btnEditInvoice" Content="Edit Invoice" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="205" Height="25"/>
-                        <Button x:Name="btnDeleteInvoice" Content="Delete Invoice" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="205" Height="25"/>
+                        <Button x:Name="btnAddInvoice" Content="Add Invoice" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="205" Height="25" Click="BtnAddInvoice_Click"/>
+                        <Button x:Name="btnEditInvoice" Content="Edit Invoice" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="205" Height="25" Click="BtnEditInvoice_Click"/>
+                        <Button x:Name="btnDeleteInvoice" Content="Delete Invoice" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="205" Height="25" Click="BtnDeleteInvoice_Click"/>
+                        <Button x:Name="btnSaveInvoice" Content="Save Invoice" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" Width="99" Click="BtnSaveInvoice_Click" Visibility="Hidden"/>
+                        <Button x:Name="btnCancelInvoice" Content="Cancel" HorizontalAlignment="Left" Margin="116,70,0,0" VerticalAlignment="Top" Width="99" Click="BtnCancelInvoice_Click" Visibility="Hidden"/>
+                        <Button x:Name="btnDeleteConfirm" Content="Delete Invoice" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="99" Visibility="Hidden" Click="BtnDeleteConfirm_Click"/>
+                        <Button x:Name="btnDeleteCancel" Content="Cancel" HorizontalAlignment="Left" Margin="116,37,0,0" VerticalAlignment="Top" Width="99" Visibility="Hidden" Click="BtnDeleteCancel_Click"/>
+                        <Label x:Name="lblDeleteConfirmation" Content="Really delete invoice?" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="10,3,0,0" VerticalAlignment="Top" FontSize="18" Width="205" Visibility="Hidden"/>
 
                     </Grid>
 
                 </GroupBox>
-                <GroupBox Header="Item Controls" HorizontalAlignment="Left" Height="209" Margin="428,138,0,0" VerticalAlignment="Top" Width="235">
+                <GroupBox x:Name="grpItemControls" Header="Item Controls" HorizontalAlignment="Left" Height="209" Margin="428,138,0,0" VerticalAlignment="Top" Width="235" IsEnabled="False" IsEnabledChanged="GrpItemControls_IsEnabledChanged">
                     <Grid HorizontalAlignment="Left" Height="199" Margin="0,0,-2,-12" VerticalAlignment="Top" Width="225">
-                        <ComboBox x:Name="cmbInvoiceItems" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="205" SelectionChanged="CmbInvoiceItems_SelectionChanged"/>
-                        <Button Content="Remove Selected" HorizontalAlignment="Left" Margin="60,37,0,0" VerticalAlignment="Top" Width="104"/>
-                        <Label Content="Add New Item" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="205"/>
-                        <Rectangle Fill="#CCCCCC" HorizontalAlignment="Left" Height="1" Margin="10,66,0,0" Stroke="Gray" VerticalAlignment="Top" Width="205" RenderTransformOrigin="0.43,0.27"/>
-                        <ComboBox x:Name="cmbItemSelection" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top" Width="205"/>
-                        <Button Content="Add to Invoice" HorizontalAlignment="Left" Margin="60,169,0,0" VerticalAlignment="Top" Width="104"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="61*"/>
+                            <ColumnDefinition Width="164*"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox x:Name="cmbInvoiceItems" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="205" SelectionChanged="CmbInvoiceItems_SelectionChanged" Grid.ColumnSpan="2"/>
+                        <Button x:Name="btnRemoveSelectedItem" Content="Remove Selected" HorizontalAlignment="Left" Margin="60,37,0,0" VerticalAlignment="Top" Width="104" Grid.ColumnSpan="2" Click="BtnRemoveSelectedItem_Click"/>
+                        <Label Content="Add New Item" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="205" Grid.ColumnSpan="2"/>
+                        <Rectangle Fill="#CCCCCC" HorizontalAlignment="Left" Height="1" Margin="10,66,0,0" Stroke="Gray" VerticalAlignment="Top" Width="205" RenderTransformOrigin="0.43,0.27" Grid.ColumnSpan="2"/>
+                        <ComboBox x:Name="cmbItemSelection" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top" Width="205" Grid.ColumnSpan="2"/>
+                        <Button x:Name="btnAddToInvoice" Content="Add to Invoice" HorizontalAlignment="Left" Margin="60,169,0,0" VerticalAlignment="Top" Width="104" Click="BtnAddToInvoice_Click" Grid.ColumnSpan="2"/>
                         <Label Content="Filter:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top"/>
-                        <TextBox x:Name="txtFilter" HorizontalAlignment="Left" Height="23" Margin="54,129,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="TxtFilter_TextChanged"/>
+                        <TextBox x:Name="txtFilter" HorizontalAlignment="Left" Height="23" Margin="54,129,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="TxtFilter_TextChanged" Grid.ColumnSpan="2"/>
 
                     </Grid>
 
