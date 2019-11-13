@@ -57,11 +57,17 @@
     </ApplicationDefinition>
     <Compile Include="clsDataAccess.cs" />
     <Compile Include="ErrorHandler.cs" />
+    <Compile Include="Formatting.cs" />
+    <Compile Include="Invoice.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Main\InvoicePages\AddInvoice.xaml.cs">
       <DependentUpon>AddInvoice.xaml</DependentUpon>
     </Compile>
     <Compile Include="Main\InvoicePages\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Main\wndMain.xaml.cs">
+      <DependentUpon>wndMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="Search\clsSearchLogic.cs" />
     <Compile Include="Search\clsSearchSQL.cs" />
@@ -80,7 +86,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main\wndMain.xaml">
+    <Page Include="Main\Prototypes\wndMain.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -95,10 +101,14 @@
     </Compile>
     <Compile Include="Main\clsMainLogic.cs" />
     <Compile Include="Main\clsMainSQL.cs" />
-    <Compile Include="Main\wndMain.xaml.cs">
+    <Compile Include="Main\Prototypes\wndMain.xaml.cs">
       <DependentUpon>wndMain.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Main\wndMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Search\wndSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
