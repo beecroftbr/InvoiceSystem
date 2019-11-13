@@ -644,7 +644,15 @@ namespace InvoiceSystem.Main
         /// <param name="e">Unused.</param>
         private void BtnDeleteCancel_Click(object sender, RoutedEventArgs e)
         {
-            DeletingInvoice = false;
+            try
+            {
+                DeletingInvoice = false;
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -654,9 +662,17 @@ namespace InvoiceSystem.Main
         /// <param name="e">Unused.</param>
         private void BtnDeleteInvoice_Click(object sender, RoutedEventArgs e)
         {
-            // Can't delete nothing.
-            if(_currentInvoice != null)
-                DeletingInvoice = true;
+            try
+            {
+                // Can't delete nothing.
+                if (_currentInvoice != null)
+                    DeletingInvoice = true;
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
         #endregion
     }
