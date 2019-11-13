@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvoiceSystem.Search"
         mc:Ignorable="d"
-        Title="wndSearch" Height="450" Width="800">
+        Title="Search" Height="450" Width="800">
     <Grid>
-        
+        <Label Content="Invoice Search" HorizontalAlignment="Left" Margin="300,6,0,0" VerticalAlignment="Top" Height="41" Width="200" HorizontalContentAlignment="Center" FontSize="20"/>
+
+        <StackPanel HorizontalAlignment="Center" Height="72" VerticalAlignment="Top" Width="792" Orientation="Horizontal" Margin="0,47,0,0">
+            <ComboBox x:Name="cboInvoiceNum" Width="150" Height="30" Margin="87,0,0,0" SelectionChanged="CboInvoiceNum_SelectionChanged"/>
+            <ComboBox x:Name="cboInvoiceDate" Width="150" Height="30" Margin="87,0,0,0" SelectionChanged="CboInvoiceDate_SelectionChanged"/>
+            <ComboBox x:Name="cboInvoiceTotCharge" Width="150" Height="30" Margin="87,0,0,0" SelectionChanged="CboInvoiceTotCharge_SelectionChanged"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Left" Height="300" Margin="0,119,0,0" VerticalAlignment="Top" Width="792" Orientation="Horizontal">
+            <DataGrid x:Name="dgInvoice" Width="400" Margin="10"/>
+            <StackPanel Width="371" Orientation="Vertical">
+                <Button x:Name="btnSelectInvoice" Content="Select Invoice" Margin="50" Height="39" Click="btnSelectInvoice_click" FontSize="14"/>
+                <Button x:Name="btnReset" Content="Reset Invoice Selection" Margin="50" Height="39" Click="btnReset_click" FontSize="14"/>
+            </StackPanel>
+        </StackPanel>
+
     </Grid>
 </Window>

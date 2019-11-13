@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace InvoiceSystem.Search
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class clsSearchSQL
     {
+        //SELECT * FROM Invoices;
+        //SELEC DISTINCT 
     }
 }
