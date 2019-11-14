@@ -5,8 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvoiceSystem.Main.InvoicePages"
         mc:Ignorable="d"
-        Title="wndItems" Height="450" Width="800">
-    <Grid>
-        
+        Title="Edit Items" Height="450" Width="766.598">
+    <Grid Margin="0,0,2,0">
+        <DataGrid HorizontalAlignment="Center" Height="381" Margin="25,10,302,0" VerticalAlignment="Top" Width="430" Name="itemDetails"
+                  ItemsSource ="{Binding itemList}" DataContext="{Binding RelativeSource={RelativeSource Self}}" AutoGenerateColumns="False" HorizontalContentAlignment="Center" IsReadOnly="True" CanUserAddRows="False"
+                  CanUserReorderColumns="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" SelectionUnit="FullRow" SelectionChanged="ItemDetails_SelectionChanged">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Item Code" Width="70"
+                                    Binding="{Binding ItemCode}" SortDirection="Ascending"/>
+                <DataGridTextColumn Header="Item Description" Width="290"
+                                    Binding="{Binding ItemDesc}"/>
+                <DataGridTextColumn Header="Cost"
+                                    Binding="{Binding Cost}"
+                                    Width="*"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <GroupBox Header="Item Info" HorizontalAlignment="Left" Height="215" Margin="493,14,0,0" VerticalAlignment="Top" Width="233">
+            <Grid HorizontalAlignment="Left" Height="216" Margin="0,0,-2,0" VerticalAlignment="Top" Width="223">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="133*"/>
+                    <ColumnDefinition Width="90*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Code" HorizontalAlignment="Left" VerticalAlignment="Top"  Height="27" Width="48" FontSize="16" Margin="0,10,0,0"/>
+                <TextBox x:Name="codeText" HorizontalAlignment="Left" Height="23" Margin="6,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Grid.ColumnSpan="2"/>
+                <Label Content="Description" HorizontalAlignment="Left" Margin="0,72,0,0" VerticalAlignment="Top" Width="94" FontSize="16" />
+                <TextBox x:Name="descriptionText" HorizontalAlignment="Left" Height="23" Margin="6,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Grid.ColumnSpan="2"/>
+                <Label Content="Cost" HorizontalAlignment="Left" Margin="0,137,0,0" VerticalAlignment="Top" Width="94" FontSize="16" />
+                <TextBox x:Name="costText" HorizontalAlignment="Left" Height="23" Margin="6,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Grid.ColumnSpan="2"/>
+            </Grid>
+        </GroupBox>
+        <Button Content="Save" HorizontalAlignment="Left" Margin="506,273,0,0" VerticalAlignment="Top" Width="91" Height="29"/>
+        <Button Content="Add New" HorizontalAlignment="Left" Margin="620,272,0,0" VerticalAlignment="Top" Width="91" Height="29"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="565,330,0,0" VerticalAlignment="Top" Width="91" Height="29" Click="CancelBtn_Clicked"/>
+
     </Grid>
 </Window>
