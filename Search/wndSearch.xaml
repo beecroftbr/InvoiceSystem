@@ -5,22 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvoiceSystem.Search"
         mc:Ignorable="d"
-        Title="Search" Height="450" Width="800">
+        Title="Invoice Search" Height="390" Width="700">
     <Grid>
-        <Label Content="Invoice Search" HorizontalAlignment="Left" Margin="300,6,0,0" VerticalAlignment="Top" Height="41" Width="200" HorizontalContentAlignment="Center" FontSize="20"/>
-
-        <StackPanel HorizontalAlignment="Center" Height="72" VerticalAlignment="Top" Width="792" Orientation="Horizontal" Margin="0,47,0,0">
-            <ComboBox x:Name="cboInvoiceNum" Width="150" Height="30" Margin="87,0,0,0" SelectionChanged="CboInvoiceNum_SelectionChanged"/>
-            <ComboBox x:Name="cboInvoiceDate" Width="150" Height="30" Margin="87,0,0,0" SelectionChanged="CboInvoiceDate_SelectionChanged"/>
-            <ComboBox x:Name="cboInvoiceTotCharge" Width="150" Height="30" Margin="87,0,0,0" SelectionChanged="CboInvoiceTotCharge_SelectionChanged"/>
-        </StackPanel>
-        <StackPanel HorizontalAlignment="Left" Height="300" Margin="0,119,0,0" VerticalAlignment="Top" Width="792" Orientation="Horizontal">
-            <DataGrid x:Name="dgInvoice" Width="400" Margin="10"/>
-            <StackPanel Width="371" Orientation="Vertical">
-                <Button x:Name="btnSelectInvoice" Content="Select Invoice" Margin="50" Height="39" Click="btnSelectInvoice_click" FontSize="14"/>
-                <Button x:Name="btnReset" Content="Reset Invoice Selection" Margin="50" Height="39" Click="btnReset_click" FontSize="14"/>
-            </StackPanel>
-        </StackPanel>
-
+        <GroupBox Header="Search" HorizontalAlignment="Left" Height="328" Margin="10,19,0,0" VerticalAlignment="Top" Width="674">
+            <Grid HorizontalAlignment="Left" Height="313" Margin="0,0,-13,0" VerticalAlignment="Top" Width="675">
+                <StackPanel HorizontalAlignment="Left" Height="289" Margin="10,10,0,0" VerticalAlignment="Top" Width="665" Orientation="Horizontal">
+                    <DataGrid x:Name="dgInvoice" Width="350" ItemsSource="{Binding}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" SelectionChanged="dgInvoice_click">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Invoice Number" Width="100" Binding="{Binding InvoiceNumber}"/>
+                            <DataGridTextColumn Header="Invoice Date" Width="160" Binding="{Binding InvoiceDate}"/>
+                            <DataGridTextColumn Header="Total Charge" Width="90" Binding="{Binding TotalCost}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Width="309">
+                        <GroupBox Header="Invoice Search Filter" Height="148" Margin="20,50,20,0">
+                            <StackPanel HorizontalAlignment="Left" Height="126" VerticalAlignment="Top" Width="260" Margin="0,0,-2,0">
+                                <StackPanel Height="42" Orientation="Vertical">
+                                    <StackPanel Height="42" Orientation="Horizontal">
+                                        <Label Content="Invoice Number" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Width="124"/>
+                                        <ComboBox x:Name="cboInvoiceNum" Width="130" Margin="0,10" SelectionChanged="cboInvoiceNum_SelectionChanged"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Height="42" Orientation="Horizontal">
+                                    <Label Content="Invoice Date" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Width="124"/>
+                                    <ComboBox x:Name="cboInvoiceDate" Width="130" Margin="0,10" SelectionChanged="cboInvoiceDate_SelectionChanged"/>
+                                </StackPanel>
+                                <StackPanel Height="42" Orientation="Horizontal">
+                                    <Label Content="Invoice Total Charge" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Width="124"/>
+                                    <ComboBox x:Name="cboInvoiceTotCharge" Width="130" Margin="0,10" SelectionChanged="cboInvoiceTotCharge_SelectionChanged"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+                        <StackPanel Height="90" Orientation="Horizontal">
+                            <Button x:Name="btnReset" Content="Reset Search" Width="100" Height="25" Margin="20,20,0,0" Click="btnReset_click"/>
+                            <Button x:Name="btnSelectInvoice" Content="Select Invoice" Width="100" Height="25" Margin="70,20,0,0" Click="btnSelectInvoice_click" IsEnabled="False"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>
