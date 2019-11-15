@@ -37,9 +37,10 @@
                 <TextBox x:Name="costText" HorizontalAlignment="Left" Height="23" Margin="6,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Grid.ColumnSpan="2"/>
             </Grid>
         </GroupBox>
-        <Button Content="Save" HorizontalAlignment="Left" Margin="506,273,0,0" VerticalAlignment="Top" Width="91" Height="29"/>
-        <Button Content="Add New" HorizontalAlignment="Left" Margin="620,272,0,0" VerticalAlignment="Top" Width="91" Height="29"/>
-        <Button Content="Cancel" HorizontalAlignment="Left" Margin="565,330,0,0" VerticalAlignment="Top" Width="91" Height="29" Click="CancelBtn_Clicked"/>
+        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="506,273,0,0" VerticalAlignment="Top" Width="91" Height="29"/>
+        <Button x:Name="AddButton" Content="Add New" HorizontalAlignment="Left" Margin="620,272,0,0" VerticalAlignment="Top" Width="91" Height="29"/>
+        <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" Margin="506,320,0,0" VerticalAlignment="Top" Width="91" Height="29"/>
+        <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="620,320,0,0" VerticalAlignment="Top" Width="91" Height="29" Click="CancelBtn_Clicked"/>
 
     </Grid>
 </Window>
