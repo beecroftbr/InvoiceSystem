@@ -160,6 +160,13 @@ namespace InvoiceSystem.Main
         private Invoice newInvoice;
 
         /// <summary>
+        /// Holds a searched invoice number, allowing external windows
+        /// to manipulate a window-level variable independent of the window
+        /// instance.
+        /// </summary>
+        public static int searchedInvoiceNumber;
+
+        /// <summary>
         /// Default constructor for wndMain.
         /// </summary>
         public wndMain()
@@ -259,12 +266,13 @@ namespace InvoiceSystem.Main
             {
                 int currentInvoiceID = _currentInvoice.InvoiceNumber;
                 new Search.wndSearch().ShowDialog();
-                // Initialize wndSearch with a reference to the current Invoice object
-                // so that it can directly modify it.
-                // Commented out for prototype.
-                //new Search.wndSearch(ref _currentInvoice).ShowDialog();
-                if (currentInvoiceID != _currentInvoice.InvoiceNumber)
+                // The search window should have changed searchedInvoiceNumber.
+                // Set the current invoice to the searched invoice if it has changed.
+                if (currentInvoiceID != searchedInvoiceNumber)
+                {
+                    _currentInvoice = clsMainLogic.GetInvoices().FirstOrDefault(a => a.InvoiceNumber == searchedInvoiceNumber);
                     SetInvoice(_currentInvoice);
+                }
             }
             catch (Exception ex)
             {
