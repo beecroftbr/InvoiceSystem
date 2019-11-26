@@ -54,5 +54,21 @@ namespace InvoiceSystem.Search
         {
             return "SELECT * FROM Invoices WHERE " + filter;
         }
+
+        public static string GetInvoiceByNum(int invoiceNum)
+        {
+            return "SELECT * FROM Invoices WHERE InvoiceNum = " + invoiceNum;
+        }
+
+        /// <summary>
+        /// Gets the SQL for getting all item details that are associated with a given invoice number.
+        /// </summary>
+        /// <param name="invoiceNumber">The invoice number to query by.</param>
+        /// <returns>The SQL statement for getting all item details that are associated with a given invoice number.</returns>
+        public static string GetItemsByInvoiceNumber(int invoiceNumber)
+        {
+            return "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost, LineItems.LineItemNum " +
+                    "FROM LineItems, ItemDesc Where LineItems.ItemCode = ItemDesc.ItemCode And LineItems.InvoiceNum = " + invoiceNumber;
+        }
     }
 }

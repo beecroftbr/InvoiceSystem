@@ -25,21 +25,23 @@ namespace InvoiceSystem.Search
         /// <summary>
         /// Search logic class
         /// </summary>
-        clsSearchLogic searchLogic;
+        private clsSearchLogic searchLogic;
 
         /// <summary>
         /// Filter string for sql
         /// </summary>
-        string filter = "";
+        private string filter = "";
 
         /// <summary>
         /// Previously entered filter
         /// </summary>
-        string prevFilter;
+        private string prevFilter;
 
-        bool cbo1 = false;
-        bool cbo2 = false;
-        bool cbo3 = false;
+        Window main;
+
+        private bool cbo1 = false;
+        private bool cbo2 = false;
+        private bool cbo3 = false;
         #endregion
 
         #region Constructor
@@ -52,6 +54,28 @@ namespace InvoiceSystem.Search
             {
                 InitializeComponent();
                 searchLogic = new clsSearchLogic();
+
+                FillInvoiceDataGrid();
+                FillInvoiceFilters();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name,
+                            ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// wndSearch constructor
+        /// </summary>
+        public wndSearch(Window main)
+        {
+            try
+            {
+                InitializeComponent(); 
+                searchLogic = new clsSearchLogic();
+                this.main = main;
 
                 FillInvoiceDataGrid();
                 FillInvoiceFilters();
@@ -152,6 +176,8 @@ namespace InvoiceSystem.Search
         {
             try
             {
+                Application.Current.Properties.Add("CurrentInvoice", clsSearchLogic.GetCurrInvoice(((Invoice)dgInvoice.SelectedItem).InvoiceNumber));
+
                 //Closes search window
                 this.Close();
             }

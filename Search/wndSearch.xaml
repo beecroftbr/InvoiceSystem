@@ -12,7 +12,7 @@
                 <StackPanel HorizontalAlignment="Left" Height="289" Margin="10,10,0,0" VerticalAlignment="Top" Width="665" Orientation="Horizontal">
                     <DataGrid x:Name="dgInvoice" Width="350" ItemsSource="{Binding}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" SelectionChanged="dgInvoice_click">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Invoice Number" Width="100" Binding="{Binding InvoiceNumber}"/>
+                            <DataGridTextColumn Header="Invoice Number" Width="100" Binding="{Binding InvoiceNumber}" x:Name="num"/>
                             <DataGridTextColumn Header="Invoice Date" Width="160" Binding="{Binding InvoiceDate}"/>
                             <DataGridTextColumn Header="Total Charge" Width="90" Binding="{Binding TotalCost}"/>
                         </DataGrid.Columns>
