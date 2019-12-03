@@ -55,20 +55,24 @@ namespace InvoiceSystem.Search
             return "SELECT * FROM Invoices WHERE " + filter;
         }
 
-        public static string GetInvoiceByNum(int invoiceNum)
+        /// <summary>
+        /// Get Invoice by invoice number
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        /// <returns></returns>
+        public static string GetInvoiceByNum(string invoiceNum)
         {
             return "SELECT * FROM Invoices WHERE InvoiceNum = " + invoiceNum;
         }
 
         /// <summary>
-        /// Gets the SQL for getting all item details that are associated with a given invoice number.
+        /// Get items for an invoice based on invoice number
         /// </summary>
-        /// <param name="invoiceNumber">The invoice number to query by.</param>
-        /// <returns>The SQL statement for getting all item details that are associated with a given invoice number.</returns>
-        public static string GetItemsByInvoiceNumber(int invoiceNumber)
+        /// <param name="invoiceNum"></param>
+        /// <returns></returns>
+        public static string GetItemsByInvoiceNum(string invoiceNum)
         {
-            return "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost, LineItems.LineItemNum " +
-                    "FROM LineItems, ItemDesc Where LineItems.ItemCode = ItemDesc.ItemCode And LineItems.InvoiceNum = " + invoiceNumber;
+            return "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost, LineItems.LineItemNum FROM LineItems, ItemDesc Where LineItems.ItemCode = ItemDesc.ItemCode And LineItems.InvoiceNum = " + invoiceNum;
         }
     }
 }

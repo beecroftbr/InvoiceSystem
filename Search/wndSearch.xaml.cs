@@ -37,7 +37,10 @@ namespace InvoiceSystem.Search
         /// </summary>
         private string prevFilter;
 
-        Window main;
+        /// <summary>
+        /// Currently selected object
+        /// </summary>
+        //private Invoice currInvoice;
 
         private bool cbo1 = false;
         private bool cbo2 = false;
@@ -69,13 +72,13 @@ namespace InvoiceSystem.Search
         /// <summary>
         /// wndSearch constructor
         /// </summary>
-        public wndSearch(Window main)
+        public wndSearch(ref Invoice currInvoice)
         {
             try
             {
-                InitializeComponent(); 
+                InitializeComponent();
                 searchLogic = new clsSearchLogic();
-                this.main = main;
+                //this.currInvoice = currInvoice;
 
                 FillInvoiceDataGrid();
                 FillInvoiceFilters();
@@ -176,7 +179,9 @@ namespace InvoiceSystem.Search
         {
             try
             {
-                Application.Current.Properties.Add("CurrentInvoice", clsSearchLogic.GetCurrInvoice(((Invoice)dgInvoice.SelectedItem).InvoiceNumber));
+                //Selected invoice
+                Invoice selectedInvoice = clsSearchLogic.GetCurrInvoice(((Invoice)dgInvoice.SelectedItem).InvoiceNumber.ToString());
+                Main.wndMain.searchedInvoiceNumber = selectedInvoice.InvoiceNumber;
 
                 //Closes search window
                 this.Close();
@@ -227,7 +232,8 @@ namespace InvoiceSystem.Search
         {
             try
             {
-                if(((ComboBox)sender).Text != null) {
+                if (((ComboBox)sender).Text != null)
+                {
                     if (cbo1 == true)
                         filter = prevFilter;
 

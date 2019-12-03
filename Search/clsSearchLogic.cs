@@ -164,7 +164,7 @@ namespace InvoiceSystem.Search
         /// Get current Invoice by selected invoice number
         /// </summary>
         /// <returns></returns>
-        public static Invoice GetCurrInvoice(int invoiceNum)
+        public static Invoice GetCurrInvoice(string invoiceNum)
         {
             try
             {
@@ -174,10 +174,10 @@ namespace InvoiceSystem.Search
 
                 return new Invoice()
                 {
-                    InvoiceNumber = int.TryParse(ds.Tables[0].Rows[0].ItemArray[0].ToString(), out int inNumber) ? inNumber : 0,
+                    InvoiceNumber = int.TryParse(ds.Tables[0].Rows[0].ItemArray[0].ToString(), out int InvoiceNumber) ? InvoiceNumber : 0,
                     InvoiceDate = DateTime.Parse(ds.Tables[0].Rows[0].ItemArray[1].ToString()),
-                    TotalCost = double.TryParse(ds.Tables[0].Rows[0].ItemArray[2].ToString(), out double totalCost) ? totalCost : 0,
-                    Items = GetItems(inNumber),
+                    TotalCost = double.TryParse(ds.Tables[0].Rows[0].ItemArray[2].ToString(), out double TotalCost) ? TotalCost : 0,
+                    Items = GetItems(invoiceNum)
                 };
 
             }
@@ -189,39 +189,37 @@ namespace InvoiceSystem.Search
         }
 
         /// <summary>
-        /// Gets all items that belong to a given invoice ID.
+        /// Gets items for an invoice by a given invoice number
         /// </summary>
-        /// <param name="invoiceNumber">The ID of the invoice to search by.</param>
-        /// <returns>A List of Items belonging to the given invoice ID.</returns>
-        public static List<Item> GetItems(int invoiceNumber)
+        /// <returns></returns>
+        private static List<Item> GetItems(string invoiceNum)
         {
             try
             {
                 clsDataAccess db = new clsDataAccess();
-                string sSQL = clsSearchSQL.GetItemsByInvoiceNumber(invoiceNumber);
                 int numRows = 0;
-                DataSet ds = db.ExecuteSQLStatement(sSQL, ref numRows);
-                var tableszero = ds.Tables[0];
-                List<Item> itemList = new List<Item>();
-                for (int i = 0; i < tableszero.Rows.Count; i++)
+                List<Item> itemsList = new List<Item>();
+
+                DataSet ds = db.ExecuteSQLStatement(clsSearchSQL.GetItemsByInvoiceNum(invoiceNum), ref numRows);
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
-                    var rowEntry = tableszero.Rows[i];
-                    itemList.Add(new Item()
+                    itemsList.Add(new Item()
                     {
-                        ItemCode = rowEntry.ItemArray[0].ToString(),
-                        ItemDesc = rowEntry.ItemArray[1].ToString(),
-                        Cost = double.TryParse(rowEntry.ItemArray[2].ToString(), out double totalCost) ? totalCost : 0,
-                        LineItemNumber = int.TryParse(rowEntry.ItemArray[3].ToString(), out int liNumber) ? liNumber : 0
+                        ItemCode = ds.Tables[0].Rows[i][0].ToString(),
+                        ItemDesc = ds.Tables[0].Rows[i][1].ToString(),
+                        Cost = double.TryParse(ds.Tables[0].Rows[i][2].ToString(), out double Cost) ? Cost : 0,
+                        LineItemNumber = int.TryParse(ds.Tables[0].Rows[i][3].ToString(), out int LineItemNumber) ? LineItemNumber : 0
                     });
                 }
-                return itemList;
+
+                return itemsList;
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
                                     MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
             }
-
         }
         #endregion
     }
