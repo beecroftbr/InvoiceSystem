@@ -34,12 +34,13 @@
                 <Label Content="Description" HorizontalAlignment="Left" Margin="0,72,0,0" VerticalAlignment="Top" Width="94" FontSize="16" />
                 <TextBox x:Name="descriptionText" HorizontalAlignment="Left" Height="23" Margin="6,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Grid.ColumnSpan="2"/>
                 <Label Content="Cost" HorizontalAlignment="Left" Margin="0,137,0,0" VerticalAlignment="Top" Width="94" FontSize="16" />
-                <TextBox x:Name="costText" HorizontalAlignment="Left" Height="23" Margin="6,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Grid.ColumnSpan="2"/>
+                <TextBox x:Name="costText" HorizontalAlignment="Left" Height="23" Margin="6,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Grid.ColumnSpan="2" PreviewKeyDown="TxtInput_PreviewKeyDown"/>
             </Grid>
         </GroupBox>
-        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="506,273,0,0" VerticalAlignment="Top" Width="91" Height="29"/>
-        <Button x:Name="AddButton" Content="Add New" HorizontalAlignment="Left" Margin="620,272,0,0" VerticalAlignment="Top" Width="91" Height="29"/>
-        <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" Margin="506,320,0,0" VerticalAlignment="Top" Width="91" Height="29"/>
+        <Button x:Name="EditButton" Content="Edit" HorizontalAlignment="Left" Margin="506,273,0,0" VerticalAlignment="Top" Width="91" Height="29" Click="EditBtn_Clicked" IsEnabled="False"/>
+        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="506,273,0,0" VerticalAlignment="Top" Width="91" Height="29" IsEnabled="False" Visibility="Hidden" Click="SaveBtn_Clicked"/>
+        <Button x:Name="AddButton" Content="Add New" HorizontalAlignment="Left" Margin="620,272,0,0" VerticalAlignment="Top" Width="91" Height="29" Click="AddNewBtn_Clicked"/>
+        <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" Margin="506,320,0,0" VerticalAlignment="Top" Width="91" Height="29" IsEnabled="False"/>
         <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="620,320,0,0" VerticalAlignment="Top" Width="91" Height="29" Click="CancelBtn_Clicked"/>
 
     </Grid>

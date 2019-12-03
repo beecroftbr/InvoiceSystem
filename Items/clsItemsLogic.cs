@@ -43,5 +43,54 @@ namespace InvoiceSystem.Items
                     + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
+
+        public static int UpdateItem(string itemCode, string itemDesc, double itemCost)
+        {
+            try
+            {
+                clsDataAccess db = new clsDataAccess();
+                string sSQL = clsItemsSQL.UpdateItem(itemCode, itemDesc, itemCost);
+                int numRows = db.ExecuteNonQuery(sSQL);
+
+                return numRows;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "."
+                    + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
+        }
+
+        public static int AddItem(string itemCode, string itemDesc, double itemCost)
+        {
+            try
+            {
+                clsDataAccess db = new clsDataAccess();
+                string sSQL = clsItemsSQL.AddItem(itemCode, itemDesc, itemCost);
+                int numRows = db.ExecuteNonQuery(sSQL);
+
+                return numRows;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "."
+                    + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
+        }
+
+        public static Boolean CheckPrimaryKey(List<Invoice> invoiceList, string itemCode)
+        {
+            foreach (var invoice in invoiceList)
+            {
+                if (invoice.Items.Any(a => a.ItemCode == itemCode))
+                {
+                   
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

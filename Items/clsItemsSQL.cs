@@ -28,7 +28,7 @@ namespace InvoiceSystem.Items
         /// <returns>A string for the SQL code to update the item.</returns>
         public static string UpdateItem(String itemCode, String itemDesc, double itemCost)
         {
-            return "UPDATE ItemDesc SET ItemDesc = " + itemDesc + ", Cost = " + itemCost + " WHERE itemCode = " + itemCode;
+            return "UPDATE ItemDesc SET ItemDesc = '" + itemDesc + "', Cost = " + itemCost + " WHERE itemCode = '" + itemCode +"'";
 
         }
 
@@ -41,7 +41,7 @@ namespace InvoiceSystem.Items
         /// <returns>A string for the SQL code to add a new Item to the database with the desired attributes.</returns>
         public static string AddItem(String itemCode, String itemDesc, double itemCost)
         {
-            return "INSERT INTO ItemDesc VALUES (" + itemCode + ", " + itemDesc + ", " + itemCost + ")";
+            return "INSERT INTO ItemDesc VALUES ('" + itemCode + "', '" + itemDesc + "', " + itemCost + ")";
         }
 
         /// <summary>
