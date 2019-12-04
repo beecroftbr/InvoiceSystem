@@ -16,7 +16,7 @@ namespace InvoiceSystem.Items
         /// <returns>A string for the SQL code to delete the item based on the itemCode.</returns>
         public static string DeleteItem(String itemCode)
         {
-            return "DELETE FROM ItemDesc WHERE ItemCode = " + itemCode;
+            return "DELETE FROM ItemDesc WHERE ItemCode = '" + itemCode + "'";
         }
 
         /// <summary>

@@ -40,7 +40,7 @@
         <Button x:Name="EditButton" Content="Edit" HorizontalAlignment="Left" Margin="506,273,0,0" VerticalAlignment="Top" Width="91" Height="29" Click="EditBtn_Clicked" IsEnabled="False"/>
         <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="506,273,0,0" VerticalAlignment="Top" Width="91" Height="29" IsEnabled="False" Visibility="Hidden" Click="SaveBtn_Clicked"/>
         <Button x:Name="AddButton" Content="Add New" HorizontalAlignment="Left" Margin="620,272,0,0" VerticalAlignment="Top" Width="91" Height="29" Click="AddNewBtn_Clicked"/>
-        <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" Margin="506,320,0,0" VerticalAlignment="Top" Width="91" Height="29" IsEnabled="False"/>
+        <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" Margin="506,320,0,0" VerticalAlignment="Top" Width="91" Height="29" IsEnabled="False" Click="DeleteBtn_Clicked"/>
         <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="620,320,0,0" VerticalAlignment="Top" Width="91" Height="29" Click="CancelBtn_Clicked"/>
 
     </Grid>
