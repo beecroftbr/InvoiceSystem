@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:InvoiceSystem"
              StartupUri="main\wndMain.xaml">
     <Application.Resources>
-         
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                
+                <ResourceDictionary Source="WhistlerBlue.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
     </Application.Resources>
 </Application>

@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:InvoiceSystem.Search"
         mc:Ignorable="d"
         Title="Invoice Search" Height="390" Width="700">
-    <Grid>
-        <GroupBox Header="Search" HorizontalAlignment="Left" Height="328" Margin="10,19,0,0" VerticalAlignment="Top" Width="674">
+    <Grid Margin="0,0,0,-8">
+        <GroupBox Header="Search" HorizontalAlignment="Left" Height="338" Margin="10,19,0,0" VerticalAlignment="Top" Width="674">
             <Grid HorizontalAlignment="Left" Height="313" Margin="0,0,-13,0" VerticalAlignment="Top" Width="675">
                 <StackPanel HorizontalAlignment="Left" Height="289" Margin="10,10,0,0" VerticalAlignment="Top" Width="665" Orientation="Horizontal">
                     <DataGrid x:Name="dgInvoice" Width="350" ItemsSource="{Binding}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" SelectionChanged="dgInvoice_click">

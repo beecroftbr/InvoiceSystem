@@ -22,7 +22,7 @@
             </DataGrid.Columns>
 
         </DataGrid>
-        <GroupBox Header="Item Info" HorizontalAlignment="Left" Height="215" Margin="493,14,0,0" VerticalAlignment="Top" Width="233">
+        <GroupBox Header="Item Info" HorizontalAlignment="Left" Height="219" Margin="493,14,0,0" VerticalAlignment="Top" Width="233">
             <Grid HorizontalAlignment="Left" Height="216" Margin="0,0,-2,0" VerticalAlignment="Top" Width="223">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="133*"/>
