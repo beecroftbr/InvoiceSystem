@@ -83,9 +83,9 @@
                 </GroupBox>
             </Grid>
         </GroupBox>
-        <Label x:Name="lblInvoiceID" Content="Invoice ID: " HorizontalAlignment="Left" Margin="126,38,0,0" VerticalAlignment="Top" FontWeight="DemiBold"/>
-        <Label x:Name="lblInvoiceDate" Content="Invoice Date: " HorizontalAlignment="Left" Margin="286,38,0,0" VerticalAlignment="Top" FontWeight="DemiBold"/>
-        <Label x:Name="lblTotalCost" Content="Total Cost: " HorizontalAlignment="Left" Margin="485,38,0,0" VerticalAlignment="Top" FontWeight="DemiBold"/>
+        <Label x:Name="lblInvoiceID" Content="Invoice ID: " HorizontalAlignment="Left" Margin="125,44,0,0" VerticalAlignment="Top" FontWeight="DemiBold"/>
+        <Label x:Name="lblInvoiceDate" Content="Invoice Date: " HorizontalAlignment="Left" Margin="285,44,0,0" VerticalAlignment="Top" FontWeight="DemiBold"/>
+        <Label x:Name="lblTotalCost" Content="Total Cost: " HorizontalAlignment="Left" Margin="484,44,0,0" VerticalAlignment="Top" FontWeight="DemiBold"/>
 
     </Grid>
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -268,7 +269,7 @@ namespace InvoiceSystem.Main
                 new Search.wndSearch().ShowDialog();
                 // The search window should have changed searchedInvoiceNumber.
                 // Set the current invoice to the searched invoice if it has changed.
-                if (currentInvoiceID != searchedInvoiceNumber)
+                if (currentInvoiceID != searchedInvoiceNumber && searchedInvoiceNumber != 0)
                 {
                     _currentInvoice = clsMainLogic.GetInvoices().FirstOrDefault(a => a.InvoiceNumber == searchedInvoiceNumber);
                     SetInvoice(_currentInvoice);
@@ -681,6 +682,17 @@ namespace InvoiceSystem.Main
                 ErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                     MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Overrides the event for the window's default close operation.
+        /// Ensures the application exits when the main window is closed.
+        /// </summary>
+        /// <param name="e">CancelEventArgs that are passed to the base.</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            Environment.Exit(0);
         }
         #endregion
     }
