@@ -430,7 +430,7 @@ namespace InvoiceSystem.Items
         /// Method called to check if the text boxes are empty.
         /// </summary>
         /// <returns>Returns true if none of the text boxes are empty.</returns>
-        public Boolean CheckText()
+        private Boolean CheckText()
         {
             try
             {
